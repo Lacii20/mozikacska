@@ -9,55 +9,70 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace mozi
+namespace mozikacska
 {
-    public class Mozi
+    public class mozi
     {
-        public string Cim { get; set; }
-
+        public string Cím { get; set; }
         public DateTime Időpont { get; set; }
-
         public string Terem { get; set; }
-
         public int Szabadhelyek { get; set; }
-
         public bool _3D { get; set; }
-
-        public Mozi(string cim, DateTime időpont, string terem, int szabadhelyek, bool _3D)
+        public mozi(string cím, DateTime időpont, string terem, int szabadhelyek, bool _3D)
         {
-            Cim = cim;
+            Cím = cím;
             Időpont = időpont;
             Terem = terem;
             Szabadhelyek = szabadhelyek;
             this._3D = _3D;
         }
+
+
     }
     public partial class MainWindow : Window
     {
-        public List<Mozi> mozifilmek = new List<Mozi>();
-
+        public List<mozi> mozifilmek = new List<mozi>();
         public MainWindow()
         {
             InitializeComponent();
-            mozifilmek.Add(new Mozi("Gyűrűk Ura", new DateTime(2025, 12, 15), "1-es terem", 12, true));
-            mozifilmek.Add(new Mozi("Nagyfiúk 2", new DateTime(2025, 11, 10), "3-es terem", 12, true));
-            mozifilmek.Add(new Mozi("Shamless", new DateTime(2025, 10, 11), "4-es terem", 12, true));
-            mozifilmek.Add(new Mozi("Venom", new DateTime(2025, 12, 08), "5-es terem", 12, true));
-            mozifilmek.Add(new Mozi("Spider-Man", new DateTime(2025, 11, 10), "2-es terem", 12, true));
-            datagrid.ItemsSource = mozifilmek;
+            mozifilmek.Add(new mozi("Gyűrűk Ura", new DateTime(2025, 12, 15, 10, 12, 31), "1-es terem", 12, true));
+            mozifilmek.Add(new mozi("Nagyfiúk", new DateTime(2025, 12, 15, 10, 12, 31), "2-es terem", 12, true));
+            mozifilmek.Add(new mozi("Transformers 3", new DateTime(2025, 1, 31, 3, 9, 24), "5-es terem", 10, true));
+            mozifilmek.Add(new mozi("Shrek 2", new DateTime(2025, 2, 24, 21, 31, 8), "2-es terem", 6, true));
+            mozifilmek.Add(new mozi("Szenfényvesztők 3", new DateTime(2025, 3, 12, 14, 17, 19), "4-es terem", 2, true));
+            dataGrid.ItemsSource = mozifilmek;
         }
+
+        private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
         private void adatokbetoltese(object sender, RoutedEventArgs e)
         {
-            datagrid.ItemsSource = mozifilmek;
+
         }
-        private void foglalás(object sender, RoutedEventArgs e)
+
+        private void foglalas(object sender, RoutedEventArgs e)
         {
-            if (datagrid.SelectedItems is Mozi)
+            if (dataGrid.SelectedItem is mozi)
             {
-                ((Mozi)datagrid.SelectedItem).Szabadhelyek
-                    = ((Mozi)datagrid.SelectedItem).Szabadhelyek - 1;
-                datagrid.Items.Refresh();
+                ((mozi)dataGrid.SelectedItem).Szabadhelyek
+                    = ((mozi)dataGrid.SelectedItem).Szabadhelyek - 1;
+                dataGrid.Items.Refresh();
             }
+        }
+
+        private void vanhely(object sender, RoutedEventArgs e)
+        {
+            List<mozi> csakaholvanhely = new List<mozi>();
+            foreach (var mozi in mozifilmek)
+            {
+                if (mozi.Szabadhelyek > 0)
+                    csakaholvanhely.Add(mozi);
+            }
+            dataGrid.ItemsSource = csakaholvanhely;
+            dataGrid.Items.Refresh();
         }
     }
 }
